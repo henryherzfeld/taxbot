@@ -1,0 +1,64 @@
+fips: 37129
+form:
+  steps:
+    - visit: "https://newhanovercountynccss.munisselfservice.com/citizens/RealEstate/Default.aspx?mode=new"
+    - fill_in:
+        - name: ctl00$ctl00$PrimaryPlaceHolder$ContentPlaceHolderMain$Control$ParcelIdSearchFieldLayout$ctl01$ParcelIDTextBox
+  #        selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_Control_ParcelIdSearchFieldLayout_ctl01_ParcelIDTextBox"
+          value: $PID
+    - click_on:
+        - value: Search
+          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_Control_FormLayoutItem7_ctl01_Button1"
+    - find:
+        - value: Search Results
+    - click_on:
+        - value: View Bill
+          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl21_ViewBillLinkButton"
+    - return:
+        - name:
+          selector: "tr.alternaterows > td:nth-child(6)"
+          value: $DUE_2020
+        - name:
+          selector: "tr.alternaterows > td:nth-child(2)"
+          value: $AMOUNT_2020
+    - wait: 0.5
+    - click_on:
+        - value: Property Detail
+          selector: "a[href='/citizens/RealEstate/ParcelDetail.aspx']"
+    - find:
+        - value: Property Detail
+    - return:
+        - name:
+          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_LocationLabel"
+          value: $PROPERTY_STREET_ADDR
+    - wait: 0.5
+    - click_on:
+        - value: Owner Information
+          selector: "a[href='/citizens/RealEstate/OwnerInformation.aspx']"
+    - find:
+        - value: Owner Information
+    - return:
+        - name:
+          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_OwnerInformation1_OwnerInformationFormLayout_CustomerNameFormLayoutItem_ctl01_CustomerNameLabel"
+          value: $OWNER_NAME
+        - name:
+          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_OwnerInformation1_OwnerInformationFormLayout_CustomerAddressFormLayoutItem_ctl01_CustomerAddressLabel"
+          value: $OWNER_STREET_ADDR
+        - name:
+          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_OwnerInformation1_OwnerInformationFormLayout_CityStateZipFormLayoutItem_ctl01_CityStateZipLabel"
+          value: $OWNER_CITY_STATE_ZIP
+    - back:
+    - back:
+    - back:
+    - click_on:
+        - value: View Bill
+          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl20_ViewBillLinkButton"
+    - find:
+        - value: Property Detail
+    - return:
+        - name:
+          selector: "tr.alternaterows > td:nth-child(6)"
+          value: $DUE_2019
+        - name:
+          selector: "tr.alternaterows > td:nth-child(2)"
+          value: $AMOUNT_2019

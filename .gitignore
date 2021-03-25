@@ -1,0 +1,7 @@
+*.json
+pids
+.idea
+__pycache__
+meta
+db
+get_pid.py
