@@ -1,4 +1,3 @@
-import pandas as pd
 from taxbot import TaxBot
 import json
 import logging
@@ -9,7 +8,7 @@ with open("test.json") as f:
     pids = json.loads(f.read())
 
 results = {}
-for entry in pids:
+for entry in pids[0:1]:
     pid = entry['pid']
     fips = entry['fips']
 
@@ -21,6 +20,7 @@ for entry in pids:
     #     # send home cookies
     # else:
     #     don't take results, report it'
+    print(results[pid])
 
 json_str = json.dumps(results)
 with open('out.json', 'w') as f:
