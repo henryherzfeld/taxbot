@@ -12,7 +12,8 @@ class WebDriver:
     timeout = 10
 
     def __init__(self, fullscreen=False):
-        self.driver = webdriver.Chrome(executable_path=r"C:\z_chromedriver\chromedriver.exe")
+        #self.driver = webdriver.Chrome(executable_path=r"C:\z_chromedriver\chromedriver.exe")
+        self.driver = webdriver.Chrome(executable_path=r"chromedriver")
         self.fullscreen = fullscreen
         if self.fullscreen:
             self.driver.fullscreen_window()
