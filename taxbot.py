@@ -142,4 +142,11 @@ class TaxBot:
 
                         elif directive == 'return':
                             if 'value' is not None:
-                                self.return_[value] = elem.text
+                                if 'mod' in directive_data:
+                                    mod = directive_data['mod']
+                                    print(mod)
+                                    if mod == 'REMOVE_$':
+                                        ret = elem.text.replace('$', '')
+                                else:
+                                    ret = elem.text
+                                self.return_[value] = ret

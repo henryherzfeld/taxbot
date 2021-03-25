@@ -18,9 +18,11 @@ form:
         - name:
           selector: "tr.alternaterows > td:nth-child(6)"
           value: $DUE_2020
+          mod: REMOVE_$
         - name:
           selector: "tr.alternaterows > td:nth-child(2)"
           value: $AMOUNT_2020
+          mod: REMOVE_$
     - wait: 0.5
     - click_on:
         - value: Property Detail
@@ -59,6 +61,8 @@ form:
         - name:
           selector: "tr.alternaterows > td:nth-child(6)"
           value: $DUE_2019
+          mod: REMOVE_$
         - name:
           selector: "tr.alternaterows > td:nth-child(2)"
           value: $AMOUNT_2019
+          mod: REMOVE_$
