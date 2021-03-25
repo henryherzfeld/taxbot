@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options
 from time import sleep
 import logging
 logger = logging.getLogger(__name__)
@@ -13,7 +14,11 @@ class WebDriver:
 
     def __init__(self, fullscreen=False):
         #self.driver = webdriver.Chrome(executable_path=r"C:\z_chromedriver\chromedriver.exe")
-        self.driver = webdriver.Chrome(executable_path=r"chromedriver")
+        options = Options()
+        options.add_argument('--no-sandbox')
+        options.add_argument('--headless')
+
+        self.driver = webdriver.Chrome("./chromedriver", chrome_options=options)
         self.fullscreen = fullscreen
         if self.fullscreen:
             self.driver.fullscreen_window()

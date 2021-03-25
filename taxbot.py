@@ -144,7 +144,6 @@ class TaxBot:
                             if 'value' is not None:
                                 if 'mod' in directive_data:
                                     mod = directive_data['mod']
-                                    print(mod)
                                     if mod == 'REMOVE_$':
                                         ret = elem.text.replace('$', '')
                                 else:
