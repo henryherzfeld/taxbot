@@ -18,8 +18,10 @@ class WebDriver:
         options.add_argument('--no-sandbox')
         options.add_argument('--headless')
         options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-gpu')
+        options.binary_location = "/opt/bin/headless-chromium"
 
-        self.driver = webdriver.Chrome("/var/task/chromedriver", chrome_options=options)
+        self.driver = webdriver.Chrome("/opt/bin/chromedriver", chrome_options=options)
         self.fullscreen = fullscreen
         if self.fullscreen:
             self.driver.fullscreen_window()
