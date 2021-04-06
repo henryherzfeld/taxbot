@@ -22,9 +22,9 @@ class WebDriver:
         options.add_argument('--disable-gpu-sandbox')
         options.add_argument("--single-process")
         #options.add_argument('--remote-debugging-port=9222')
-        options.binary_location = "/tmp/bin/headless-chromium"
+        options.binary_location = "/opt/bin/headless-chromium"
 
-        self.driver = webdriver.Chrome("/tmp/bin/chromedriver", chrome_options=options)
+        self.driver = webdriver.Chrome(executable_path="/opt/bin/chromedriver", chrome_options=options)
         self.fullscreen = fullscreen
         if self.fullscreen:
             self.driver.fullscreen_window()
