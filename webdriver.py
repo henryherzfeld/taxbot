@@ -15,10 +15,13 @@ class WebDriver:
     def __init__(self, fullscreen=False):
         #self.driver = webdriver.Chrome(executable_path=r"C:\z_chromedriver\chromedriver.exe")
         options = Options()
-        options.add_argument('--no-sandbox')
-        options.add_argument('--headless')
+        options.add_argument("--headless")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--no-sandbox")
         options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--disable-gpu')
+        options.add_argument('--disable-gpu-sandbox')
+        options.add_argument("--single-process")
+        #options.add_argument('--remote-debugging-port=9222')
         options.binary_location = "/opt/bin/headless-chromium"
 
         self.driver = webdriver.Chrome("/opt/bin/chromedriver", chrome_options=options)
