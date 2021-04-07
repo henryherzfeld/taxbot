@@ -4,6 +4,7 @@ from collections import deque
 from selenium.common.exceptions import NoSuchElementException, ElementNotInteractableException,\
                                        ElementClickInterceptedException
 from os import path
+import re
 import logging
 logger = logging.getLogger(__name__)
 
@@ -13,8 +14,8 @@ yaml_dir = 'yamls'
 
 
 class TaxBot:
-    def __init__(self, pid, fips, verbosity=0):
-        self.driver = WebDriver()
+    def __init__(self, pid, fips, local=False, verbosity=0):
+        self.driver = WebDriver(local=local)
         self.verbosity = verbosity
         self.pid = pid
         self.return_ = {}
@@ -141,14 +142,11 @@ class TaxBot:
                                 self.abort()
 
                         elif directive == 'return':
-                            if 'value' is not None:
+                            if value is not None:
                                 if 'mod' in directive_data:
                                     mod = directive_data['mod']
                                     if mod == 'CLEAN_INT':
-                                        to_clean = ['$', ',', ' ', '  ']
-                                        ret = elem.text
-                                        for symbol in to_clean:
-                                            ret = ret.replace(symbol, '')
+                                        ret = re.findall("\d+\.\d+", elem.text).pop()
                                 else:
                                     ret = elem.text
                                 self.return_[value] = ret
