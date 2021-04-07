@@ -145,7 +145,7 @@ class TaxBot:
                                 if 'mod' in directive_data:
                                     mod = directive_data['mod']
                                     if mod == 'CLEAN_INT':
-                                        to_clean = ['$', ',']
+                                        to_clean = ['$', ',', ' ', '  ']
                                         ret = elem.text
                                         for symbol in to_clean:
                                             ret = ret.replace(symbol, '')
