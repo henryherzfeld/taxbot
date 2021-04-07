@@ -14,13 +14,16 @@ form:
     - click_on:
         - value: View Bill
           selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl21_ViewBillLinkButton"
+          alt_selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl16_ViewBillLinkButton"
     - return:
         - name:
           selector: "tr.alternaterows > td:nth-child(6)"
+          alt_selector: "tr.lightGrayBackground > td:nth-child(6)"
           value: $DUE_2020
           mod: CLEAN_INT
         - name:
           selector: "tr.alternaterows > td:nth-child(2)"
+          alt_selector: "tr.lightGrayBackground > td:nth-child(2)"
           value: $AMOUNT_2020
           mod: CLEAN_INT
     - wait: 0.5
@@ -55,14 +58,17 @@ form:
     - click_on:
         - value: View Bill
           selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl20_ViewBillLinkButton"
+          alt_selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl15_ViewBillLinkButton"
 #    - find:
 #        - value: Property Detail
     - return:
         - name:
           selector: "tr.alternaterows > td:nth-child(6)"
+          alt_selector: "tr.lightGrayBackground > td:nth-child(6)"
           value: $DUE_2019
           mod: CLEAN_INT
         - name:
           selector: "tr.alternaterows > td:nth-child(2)"
+          alt_selector: "tr.lightGrayBackground > td:nth-child(2)"
           value: $AMOUNT_2019
           mod: CLEAN_INT

@@ -112,43 +112,59 @@ class TaxBot:
                     except NoSuchElementException:
                         logger.error("Unable to find element")
                         self.abort()
-
-                    if elem is None:
-                        print('failed to find element, aborting...')
-                        self.abort()
                         break
-                    else:
-                        value = None
-                        if 'value' in directive_data:
-                            value = directive_data['value']
 
-                            if '$' in value:  # check for alias symbol, if present identify and replace
-                                value = self.resolve_alias(value)
-
-                        if directive == 'fill_in':
-                            if value is not None:
-                                self.driver.fill_in(elem, value)
-                            else:
-                                logger.error(f'fill_in directive missing "value" entry, skipping...')
-
-                        elif directive == 'click_on':
+                    if elem is None or (elem.text == "" and directive == "return"):
+                        print(directive_data)
+                        if 'alt_selector' in directive_data:
+                            print('failed to find element, using alternative selector...')
                             try:
-                                self.driver.click_on(elem)
-                            except ElementNotInteractableException:
-                                logger.error(f'Element not interactable...')
-                                print('Element not interactable...')
+                                elem = self.driver.find_element(selector=directive_data['alt_selector'])
+                            except NoSuchElementException:
+                                logger.error("Unable to find element")
                                 self.abort()
-                            except ElementClickInterceptedException:
-                                logger.error(f'Element click intercepted...')
-                                print('Element click intercepted...')
-                                self.abort()
+                                break
 
-                        elif directive == 'return':
-                            if value is not None:
-                                if 'mod' in directive_data:
-                                    mod = directive_data['mod']
-                                    if mod == 'CLEAN_INT':
-                                        ret = re.findall("\d+\.\d+", elem.text).pop()
-                                else:
-                                    ret = elem.text
-                                self.return_[value] = ret
+                        else:
+                            print('failed to find element, aborting...')
+                            self.abort()
+                            break
+
+                    value = None
+                    if 'value' in directive_data:
+                        value = directive_data['value']
+
+                        if '$' in value:  # check for alias symbol, if present identify and replace
+                            value = self.resolve_alias(value)
+
+                    if directive == 'fill_in':
+                        if value is not None:
+                            self.driver.fill_in(elem, value)
+                        else:
+                            logger.error(f'fill_in directive missing "value" entry, skipping...')
+
+                    elif directive == 'click_on':
+                        try:
+                            self.driver.click_on(elem)
+                        except ElementNotInteractableException:
+                            logger.error(f'Element not interactable...')
+                            print('Element not interactable...')
+                            self.abort()
+                        except ElementClickInterceptedException:
+                            logger.error(f'Element click intercepted...')
+                            print('Element click intercepted...')
+                            self.abort()
+
+                    elif directive == 'return':
+                        if value is not None:
+                            if 'mod' in directive_data:
+                                mod = directive_data['mod']
+                                if mod == 'CLEAN_INT':
+                                    temp = re.findall("\d+\.\d+", elem.text)
+                                    if type(temp) == list and len(temp):
+                                        ret = temp[0]
+                                    else:
+                                        ret = ""
+                            else:
+                                ret = elem.text
+                            self.return_[value] = ret
