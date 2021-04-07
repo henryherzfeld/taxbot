@@ -17,11 +17,12 @@ class TaxBot:
     def __init__(self, pid, fips, local=False, verbosity=0):
         self.driver = WebDriver(local=local)
         self.verbosity = verbosity
+        self.fips = fips
         self.pid = pid
         self.return_ = {}
 
         # load yaml data
-        with open(path.join(yaml_dir, '.'.join([fips, 'yaml']))) as f:
+        with open(path.join(yaml_dir, '.'.join([self.fips, 'yaml']))) as f:
             data = yaml.load(f.read())
 
         if 'form' in data:
