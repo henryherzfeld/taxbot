@@ -33,6 +33,7 @@ class TaxBot:
         self.complete = False
 
     def process_form(self):
+        print(f"processing pid {self.pid} with fips {self.fips}...")
         while not self.complete:
             # get current directive in directive queue
             if not len(self.directives):
