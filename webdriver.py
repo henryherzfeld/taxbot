@@ -22,6 +22,7 @@ class WebDriver:
             options.add_argument("--no-sandbox")
             options.add_argument('--disable-dev-shm-usage')
             options.add_argument('--disable-gpu-sandbox')
+            options.add_argument("--single-process")
             options.binary_location = "/opt/bin/headless-chromium"
             self.driver = webdriver.Chrome(executable_path="/opt/bin/chromedriver", chrome_options=options)
 
