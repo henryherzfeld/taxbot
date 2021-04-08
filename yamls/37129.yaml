@@ -13,11 +13,12 @@ form:
 #        - value: Search Results
     - click_on:
         - value: View Bill
-          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl21_ViewBillLinkButton"
+          selector: "tr:last-child > td:nth-last-child(2) > a"
           alt_selector:
-            1: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl16_ViewBillLinkButton"
-            2: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl14_ViewBillLinkButton"
-            3: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl12_ViewBillLinkButton"
+            1: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl21_ViewBillLinkButton"
+            2: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl16_ViewBillLinkButton"
+            3: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl14_ViewBillLinkButton"
+            4: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl12_ViewBillLinkButton"
     - return:
         - name:
           selector: "tr.alternaterows > td:nth-child(6)"
@@ -60,11 +61,12 @@ form:
     - back:
     - click_on:
         - value: View Bill
-          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl20_ViewBillLinkButton"
+          selector: "tr:nth-last-child(2) > td:nth-last-child(2) > a"
           alt_selector:
-            1: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl15_ViewBillLinkButton"
-            2: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl13_ViewBillLinkButton"
-            3: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl11_ViewBillLinkButton"
+            1: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl20_ViewBillLinkButton"
+            2: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl15_ViewBillLinkButton"
+            3: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl13_ViewBillLinkButton"
+            4: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl11_ViewBillLinkButton"
 #    - find:
 #        - value: Property Detail
     - return:
