@@ -14,7 +14,9 @@ form:
     - click_on:
         - value: View Bill
           selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl21_ViewBillLinkButton"
-          alt_selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl16_ViewBillLinkButton"
+          alt_selector:
+            1: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl16_ViewBillLinkButton"
+            2: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl14_ViewBillLinkButton"
     - return:
         - name:
           selector: "tr.alternaterows > td:nth-child(6)"
@@ -58,7 +60,9 @@ form:
     - click_on:
         - value: View Bill
           selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl20_ViewBillLinkButton"
-          alt_selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl15_ViewBillLinkButton"
+          alt_selector:
+            1: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl15_ViewBillLinkButton"
+            2: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl13_ViewBillLinkButton"
 #    - find:
 #        - value: Property Detail
     - return:

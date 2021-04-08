@@ -40,7 +40,8 @@ class TaxBot:
             if not len(self.directives):
                 self.complete = True
                 self.success = True
-                self.abort()
+                self.driver.driver.close()
+                del self.driver
             else:
                 current = self.directives.popleft()
                 self.process_step(current)
@@ -54,6 +55,7 @@ class TaxBot:
 
     def abort(self):
         self.complete = True
+        self.success = False
 
         # if self.success:  # if successful operation save page source
         #     with open(path.join(source_dir, self.pid) + '.html', 'w') as f:
@@ -71,100 +73,125 @@ class TaxBot:
 
         return value
 
+# uses selectors in directive data to perform finds on elements, falls back on alternative selectors if available
+    def process_find(self, directive, directive_data, find_elem_keys):
+        # build subset of directive_data
+        element_data = {key: value for key, value in directive_data.items() if key in find_elem_keys}
+
+        # find element on page
+        elem = None
+        try:
+            elem = self.driver.find_element(**element_data)
+        except NoSuchElementException as e:
+            logger.error(f"failed to find element, {e}")
+
+        # employ alternative selectors if no
+        if elem is None or (elem.text == "" and directive == 'return'):
+            if 'alt_selector' in directive_data:
+                print('failed to find element, trying alternative selectors...')
+
+                # alt_selectors could be a str, or dict of str
+                if type(directive_data['alt_selector']) is str:
+                    alt_selectors = [directive_data['alt_selector']]
+                else:
+                    alt_selectors = directive_data['alt_selector'].values()
+
+                for i, alt_selector in enumerate(alt_selectors):
+                    try:
+                        elem = self.driver.find_element(selector=alt_selector)
+                    except NoSuchElementException as e:
+                        logger.error(f"{e} failed to find element using alt_selector {i+1}: {alt_selector}")
+                        print(f"{e} failed to find element using alt_selector {i+1}: {alt_selector}")
+
+                    if elem is None or (elem.text == "" and directive == 'return'):
+                        print(f"failed to find element using alt_selector {i+1}: {alt_selector}")
+
+            else:
+                print('failed to find element, no alternative selectors...')
+                return None
+
+        return elem
+
     def process_step(self, current):
         # decompose directive into key, value
-        directive, directive_data_list = next(iter(current.items()))
+        directive, directive_data = next(iter(current.items()))
+
+        if type(directive_data) is not list:
+            directive_data_list = [directive_data]
+        else:
+            directive_data_list = directive_data
 
         # log/output directives
         logger.debug(f"processing directive {directive}")
         if self.verbosity > 0:
             print(f"processing directive {directive}")
 
-        # first test for attribute-free directives for webdriver
-        if directive == 'back':
-            self.driver.back()
-        elif directive == 'wait':
-            self.driver.wait(directive_data_list)
-        elif type(directive_data_list) is str:
-            if directive == 'visit':
-                self.driver.visit(directive_data_list)
-
-        elif not self.complete:
+        if not self.complete:
+            find_elem_keys = ['id', 'name', 'selector', 'class']
             for directive_data in directive_data_list:
-                # confirm our directive requires a find on an element on the page using directive data key values
-                find_elem_keys = ['id', 'name', 'selector', 'class']
 
-                find_elem = False
-                for key in find_elem_keys:
-                    if key in directive_data:
-                        find_elem = True
-                        break
-
-                if not find_elem:
-                    logger.error(f'directive requiring a find on element missing {find_elem_keys} entries')
+                # first test for attribute-free directives for webdriver
+                if directive == 'back':
+                    self.driver.back()
+                elif directive == 'wait':
+                    self.driver.wait(directive_data)
+                elif directive == 'visit':
+                    self.driver.visit(directive_data)
                 else:
-                    # build subset of directive_data
-                    element_data = {key: value for key, value in directive_data.items() if key in find_elem_keys}
+                    # confirm our directive requires a find on an element on the page using directive data key values
+                    find_elem = False
+                    for key in find_elem_keys:
+                        if key in directive_data:
+                            find_elem = True
+                            break
 
-                    # find element on page
-                    try:
-                        elem = self.driver.find_element(**element_data)
-                    except NoSuchElementException:
-                        logger.error("Unable to find element")
-                        self.abort()
-                        break
-
-                    if elem is None or (elem.text == "" and directive == "return"):
-                        print(directive_data)
-                        if 'alt_selector' in directive_data:
-                            print('failed to find element, using alternative selector...')
-                            try:
-                                elem = self.driver.find_element(selector=directive_data['alt_selector'])
-                            except NoSuchElementException:
-                                logger.error("Unable to find element")
-                                self.abort()
-                                break
-
-                        else:
+                    if not find_elem:
+                        logger.error(f"directive requiring a find on element missing {find_elem_keys} entries")
+                    else:
+                        # perform find for element using selectors and alt_selectors if available
+                        elem = self.process_find(directive, directive_data, find_elem_keys)
+                        if elem is None:
                             print('failed to find element, aborting...')
                             self.abort()
                             break
 
-                    value = None
-                    if 'value' in directive_data:
-                        value = directive_data['value']
+                        value = None
+                        if 'value' in directive_data:
+                            value = directive_data['value']
 
-                        if '$' in value:  # check for alias symbol, if present identify and replace
-                            value = self.resolve_alias(value)
+                            if '$' in value:  # check for alias symbol, if present identify and replace
+                                value = self.resolve_alias(value)
 
-                    if directive == 'fill_in':
-                        if value is not None:
-                            self.driver.fill_in(elem, value)
-                        else:
-                            logger.error(f'fill_in directive missing "value" entry, skipping...')
-
-                    elif directive == 'click_on':
-                        try:
-                            self.driver.click_on(elem)
-                        except ElementNotInteractableException:
-                            logger.error(f'Element not interactable...')
-                            print('Element not interactable...')
-                            self.abort()
-                        except ElementClickInterceptedException:
-                            logger.error(f'Element click intercepted...')
-                            print('Element click intercepted...')
-                            self.abort()
-
-                    elif directive == 'return':
-                        if value is not None:
-                            if 'mod' in directive_data:
-                                mod = directive_data['mod']
-                                if mod == 'CLEAN_INT':
-                                    temp = re.findall("\d+\.\d+", elem.text)
-                                    if type(temp) == list and len(temp):
-                                        ret = temp[0]
-                                    else:
-                                        ret = ""
+                        if directive == 'fill_in':
+                            if value is not None:
+                                self.driver.fill_in(elem, value)
                             else:
-                                ret = elem.text
-                            self.return_[value] = ret
+                                logger.error(f"fill_in directive missing 'value' entry, skipping...")
+
+                        elif directive == 'click_on':
+                            try:
+                                self.driver.click_on(elem)
+                            except ElementNotInteractableException as e:
+                                logger.error(f"{e} Element not interactable...")
+                                print(f"{e} Element not interactable...")
+                                self.abort()
+                                break
+                            except ElementClickInterceptedException as e:
+                                logger.error(f"{e} Element click intercepted...")
+                                print(f"Element click intercepted...")
+                                self.abort()
+                                break
+
+                        elif directive == 'return':
+                            if value is not None:
+                                if 'mod' in directive_data:
+                                    mod = directive_data['mod']
+                                    if mod == 'CLEAN_INT':
+                                        temp = re.findall("\d+\.\d+", elem.text)
+                                        if type(temp) == list and len(temp):
+                                            ret = temp[0]
+                                        else:
+                                            ret = ""
+                                else:
+                                    ret = elem.text
+                                self.return_[value] = ret

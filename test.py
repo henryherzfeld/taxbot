@@ -1,4 +1,6 @@
 from taxbot import TaxBot
 
-bot = TaxBot('R07112-007-008-000', '37129', local=True)
+pid = str(input("enter pid: "))
+
+bot = TaxBot(pid, '37129', local=True, verbosity=1)
 print(bot.process_form())
