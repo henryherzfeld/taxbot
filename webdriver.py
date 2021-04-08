@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class WebDriver:
-    timeout = 5
+    timeout = 3
 
     def __init__(self, local=False):
         if local:
