@@ -1,0 +1,33 @@
+onslow
+https://property.onslowcountync.gov/pt/Search/Disclaimer.aspx?FromUrl=../search/commonsearch.aspx?mode=address
+
+fips: 37133
+form:
+  steps:
+    - visit: "https://property.onslowcountync.gov/pt/search/commonsearch.aspx?mode=parid"
+    - fill_in:
+        - name: "inpParid"
+          selector: "#inpParid"
+          value: $PID
+    - click_on:
+        - value: Search
+          selector: "#btSearch"
+    - click_on:
+        - selector: "#searchResults > tbody > tr.SearchResults:first-child"
+    - return:
+        - selector:
+          value:
+
+
+
+$DUE_2020
+$DUE_2019
+$AMOUNT_2020
+$AMOUNT_2019
+$PROPERTY_STREET_ADDR
+$OWNER_NAME
+$OWNER_STREET_ADDR
+$OWNER_CITY_STATE_ZIP
+
+        - selector:
+          value:

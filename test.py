@@ -1,6 +1,7 @@
 from taxbot import TaxBot
 
 pid = str(input("enter pid: "))
+fips = str(input("enter fips: "))
 
-bot = TaxBot(pid, '37129', local=True, verbosity=1)
+bot = TaxBot(pid, fips, local=True, verbosity=1)
 print(bot.process_form())
