@@ -184,14 +184,10 @@ class TaxBot:
 
                         elif directive == 'return':
                             if value is not None:
+                                ret = elem.text
                                 if 'mod' in directive_data:
                                     mod = directive_data['mod']
                                     if mod == 'CLEAN_INT':
-                                        temp = re.findall("\d+\.\d+", elem.text)
-                                        if type(temp) == list and len(temp):
-                                            ret = temp[0]
-                                        else:
-                                            ret = ""
-                                else:
-                                    ret = elem.text
+                                        ret = re.sub(r"[^0-9.]", "", elem.text)
+
                                 self.return_[value] = ret

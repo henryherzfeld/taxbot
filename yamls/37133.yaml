@@ -21,12 +21,12 @@ form:
             4: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_BillsGridView_ctl12_ViewBillLinkButton"
     - return:
         - name:
-          selector: "tr.alternaterows > td:nth-child(6)"
+          selector: "tbody > tr:last-child > td:nth-child(6)"
           alt_selector: "tr.lightGrayBackground > td:nth-child(6)"
           value: $DUE_2020
           mod: CLEAN_INT
         - name:
-          selector: "tr.alternaterows > td:nth-child(2)"
+          selector: "table.datatable tbody > tr:last-child > td:nth-child(2)"
           alt_selector: "tr.lightGrayBackground > td:nth-child(2)"
           value: $AMOUNT_2020
           mod: CLEAN_INT
@@ -71,12 +71,12 @@ form:
 #        - value: Property Detail
     - return:
         - name:
-          selector: "tr.alternaterows > td:nth-child(6)"
+          selector: "tbody > tr:last-child > td:nth-child(6)"
           alt_selector: "tr.lightGrayBackground > td:nth-child(6)"
           value: $DUE_2019
           mod: CLEAN_INT
         - name:
-          selector: "tr.alternaterows > td:nth-child(2)"
+          selector: "table.datatable tbody > tr:last-child > td:nth-child(2)"
           alt_selector: "tr.lightGrayBackground > td:nth-child(2)"
           value: $AMOUNT_2019
           mod: CLEAN_INT
