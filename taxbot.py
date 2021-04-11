@@ -15,11 +15,11 @@ yaml_dir = 'yamls'
 
 class TaxBot:
     def __init__(self, pid, fips, local=False, verbosity=0):
-        self.driver = WebDriver(local=local)
         self.verbosity = verbosity
         self.fips = fips
         self.pid = pid
         self.return_ = {}
+        self.local = local
 
         # load yaml data
         with open(path.join(yaml_dir, '.'.join([self.fips, 'yaml']))) as f:
@@ -35,23 +35,22 @@ class TaxBot:
 
     def process_form(self):
         print(f"processing pid {self.pid} with fips {self.fips}...")
-        while not self.complete:
-            # get current directive in directive queue
-            if not len(self.directives):
-                self.complete = True
-                self.success = True
-                self.driver.driver.close()
-                del self.driver
-            else:
-                current = self.directives.popleft()
-                self.process_step(current)
+
+        with WebDriver(local=self.local) as driver:
+            while not self.complete:
+                # get current directive in directive queue
+                if not len(self.directives):
+                    self.complete = True
+                    self.success = True
+                    break
+                else:
+                    current = self.directives.popleft()
+                    self.process_step(current, driver)
 
         if self.success:
-            ret = self.return_
+            return self.return_
         else:
-            ret = None
-
-        return ret
+            return None
 
     def abort(self):
         self.complete = True
@@ -63,9 +62,6 @@ class TaxBot:
         # else:              # else save screenshot
         #     self.driver.driver.save_screenshot(path.join(screenshot_dir, self.pid) + '.png')
 
-        self.driver.driver.close()
-        del self.driver
-
     def resolve_alias(self, value):
         value = value.lstrip('$')
         if value == 'PID':
@@ -74,14 +70,14 @@ class TaxBot:
         return value
 
 # uses selectors in directive data to perform finds on elements, falls back on alternative selectors if available
-    def process_find(self, directive, directive_data, find_elem_keys):
+    def process_find(self, driver, directive, directive_data, find_elem_keys):
         # build subset of directive_data
         element_data = {key: value for key, value in directive_data.items() if key in find_elem_keys}
 
         # find element on page
         elem = None
         try:
-            elem = self.driver.find_element(**element_data)
+            elem = driver.find_element(**element_data)
         except NoSuchElementException as e:
             logger.error(f"failed to find element, {e}")
 
@@ -98,7 +94,7 @@ class TaxBot:
 
                 for i, alt_selector in enumerate(alt_selectors):
                     try:
-                        elem = self.driver.find_element(selector=alt_selector)
+                        elem = driver.find_element(selector=alt_selector)
                     except NoSuchElementException as e:
                         logger.error(f"{e} failed to find element using alt_selector {i+1}: {alt_selector}")
                         print(f"{e} failed to find element using alt_selector {i+1}: {alt_selector}")
@@ -112,7 +108,7 @@ class TaxBot:
 
         return elem
 
-    def process_step(self, current):
+    def process_step(self, current, driver):
         # decompose directive into key, value
         directive, directive_data = next(iter(current.items()))
 
@@ -132,11 +128,11 @@ class TaxBot:
 
                 # first test for attribute-free directives for webdriver
                 if directive == 'back':
-                    self.driver.back()
+                    driver.back()
                 elif directive == 'wait':
-                    self.driver.wait(directive_data)
+                    driver.wait(directive_data)
                 elif directive == 'visit':
-                    self.driver.visit(directive_data)
+                    driver.visit(directive_data)
                 else:
                     # confirm our directive requires a find on an element on the page using directive data key values
                     find_elem = False
@@ -149,7 +145,7 @@ class TaxBot:
                         logger.error(f"directive requiring a find on element missing {find_elem_keys} entries")
                     else:
                         # perform find for element using selectors and alt_selectors if available
-                        elem = self.process_find(directive, directive_data, find_elem_keys)
+                        elem = self.process_find(driver, directive, directive_data, find_elem_keys)
                         if elem is None:
                             print('failed to find element, aborting...')
                             self.abort()
@@ -164,13 +160,13 @@ class TaxBot:
 
                         if directive == 'fill_in':
                             if value is not None:
-                                self.driver.fill_in(elem, value)
+                                driver.fill_in(elem, value)
                             else:
                                 logger.error(f"fill_in directive missing 'value' entry, skipping...")
 
                         elif directive == 'click_on':
                             try:
-                                self.driver.click_on(elem)
+                                driver.click_on(elem)
                             except ElementNotInteractableException as e:
                                 logger.error(f"{e} Element not interactable...")
                                 print(f"{e} Element not interactable...")

@@ -13,7 +13,10 @@ class WebDriver:
     timeout = 3
 
     def __init__(self, local=False):
-        if local:
+        self.local = local
+
+    def __enter__(self):
+        if self.local:
             self.driver = webdriver.Chrome(executable_path=r"C:\z_chromedriver\chromedriver.exe")
         else:
             options = Options()
@@ -26,7 +29,10 @@ class WebDriver:
             options.binary_location = "/opt/bin/headless-chromium"
             self.driver = webdriver.Chrome(executable_path="/opt/bin/chromedriver", chrome_options=options)
 
-    def __del__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.driver.close()
         self.driver.quit()
 
     def wait(self, n):
