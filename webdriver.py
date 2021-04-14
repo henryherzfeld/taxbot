@@ -52,7 +52,7 @@ class WebDriver:
     def back(self):
         self.driver.back()
 
-    def find_element(self, id_=None, selector=None, class_=None, name=None):
+    def find_element(self, id_=None, selector=None, class_=None, name=None, xpath=None):
         if id_ is not None:
             strategy = By.ID
             element = id_
@@ -65,6 +65,9 @@ class WebDriver:
         elif name is not None:
             strategy = By.NAME
             element = name
+        elif xpath is not None:
+            strategy = By.XPATH
+            element = xpath
         else:
             return None
 
