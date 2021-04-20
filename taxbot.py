@@ -122,6 +122,7 @@ class TaxBot:
         if self.verbosity > 0:
             print(f"processing directive {directive}")
 
+
         if not self.complete:
             find_elem_keys = ['id', 'name', 'selector', 'class', 'xpath']
             for directive_data in directive_data_list:

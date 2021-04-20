@@ -1,4 +1,4 @@
-fips: 37129
+fips: 37019
 form:
   steps:
     - visit: "https://tax.brunsco.net/ITSNet/TaxBill.aspx"
@@ -9,6 +9,7 @@ form:
         - name: ctl00$contentplaceholdertaxBillSearch$UsercontrolTaxbillSearch$buttonSearch
           selector: "#ctl00_contentplaceholdertaxBillSearch_UsercontrolTaxbillSearch_buttonSearch"
         - xpath: //a[contains(., "2020")][1]
+    - wait: 1
     - return:
         - xpath: //a[contains(., "2020")]/../../td[5]
           value: $AMOUNT_2020
