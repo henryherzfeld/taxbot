@@ -13,12 +13,16 @@ form:
     - return:
         - xpath: //a[contains(., "2020")]/../../td[5]
           value: $AMOUNT_2020
+          mod: CLEAN_INT
         - xpath: //a[contains(., "2020")]/../../td[6]
           value: $DUE_2020
+          mod: CLEAN_INT
         - xpath: //a[contains(., "2019")]/../../td[5]
           value: $AMOUNT_2019
+          mod: CLEAN_INT
         - xpath: //a[contains(., "2019")]/../../td[6]
           value: $DUE_2019
+          mod: CLEAN_INT
         - selector: "#ctl00_contentplaceholderTaxBillSearchSummary_UsercontrolTaxBillSelectedBillDisplay_labelAccountName1Value"
           value: $OWNER_NAME
         - selector: "#ctl00_contentplaceholderTaxBillSearchSummary_UsercontrolTaxBillSelectedBillDisplay_labelMailingAddress2Value"
