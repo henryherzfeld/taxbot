@@ -26,6 +26,7 @@ form:
           value: $AMOUNT_2020
           mod: CLEAN_INT
     - exit_iframe:
+    - wait: 3
     - click_on:
         - selector: "#fancybox-close"
         - selector: "#hit_list > tbody > tr:nth-child(2)"
