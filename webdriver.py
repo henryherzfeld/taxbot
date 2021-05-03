@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
@@ -45,12 +45,21 @@ class WebDriver:
     def click_on(self, elem):
         elem.click()
 
+    def select(self, elem):
+        Select(elem)
+
     def fill_in(self, elem, text):
         elem.clear()
         elem.send_keys(text)
 
     def back(self):
         self.driver.back()
+
+    def enter_iframe(self, elem):
+        self.driver.switch_to.frame(elem)
+
+    def exit_iframe(self):
+        self.driver.switch_to.default_content()
 
     def find_element(self, id_=None, selector=None, class_=None, name=None, xpath=None):
         if id_ is not None:

@@ -134,6 +134,8 @@ class TaxBot:
                     driver.wait(directive_data)
                 elif directive == 'visit':
                     driver.visit(directive_data)
+                elif directive == 'exit_iframe':
+                    driver.exit_iframe()
                 else:
                     # confirm our directive requires a find on an element on the page using directive data key values
                     find_elem = False
@@ -179,6 +181,9 @@ class TaxBot:
                                 self.abort()
                                 break
 
+                        elif directive == 'select':
+                            driver.select(elem)
+
                         elif directive == 'return':
                             if value is not None:
                                 ret = elem.text
@@ -188,3 +193,6 @@ class TaxBot:
                                         ret = re.sub(r"[^0-9.]", "", elem.text)
 
                                 self.return_[value] = ret
+
+                        elif directive == 'enter_iframe':
+                            driver.enter_iframe(elem)
