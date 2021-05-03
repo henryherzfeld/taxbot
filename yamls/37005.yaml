@@ -8,10 +8,10 @@ form:
     - click_on:
         - selector: "#search_by > option:nth-child(4)"
         - selector: "input[type='submit']"
-    - wait: 3
+    - wait: 1
     - click_on:
         - selector: "#hit_list > tbody > tr:nth-child(1)"
-    - wait: 6
+    - wait: 1
     - enter_iframe:
         - selector: "#fancybox-frame"
     - return:
@@ -28,10 +28,10 @@ form:
     - exit_iframe:
     - click_on:
         - selector: "#fancybox-close"
-    - wait: 3
+    - wait: 1
     - click_on:
         - selector: "#hit_list > tbody > tr:nth-child(2)"
-    - wait: 3
+    - wait: 1
     - enter_iframe:
         - selector: "#fancybox-frame"
     - return:
