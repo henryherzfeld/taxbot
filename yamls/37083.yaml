@@ -1,0 +1,43 @@
+fips: 37083
+form:
+  steps:
+    - visit: "https://secure.webtaxpay.com/?county=halifax&state=NC"
+    - fill_in:
+        - selector: "input[type='text']"
+          value: $PID
+    - click_on:
+        - selector: "#search_by > option:nth-child(4)"
+        - selector: "input[type='submit']"
+    - wait: 6
+    - click_on:
+        - selector: "#hit_list > tbody > tr:nth-child(1)"
+    - wait: 2
+    - enter_iframe:
+        - selector: "#fancybox-frame"
+    - return:
+        - xpath: //table[@class='cardTable'][1]/tbody/tr/td[contains(., "Owner Name:")]/following-sibling::td
+          value: $OWNER_NAME
+        - xpath: //table[@class='cardTable'][not(@id)]/tbody/tr/td[contains(., "Description:")]/following-sibling::td
+          value: $PROPERTY_STREET_ADDR
+        - xpath: //th[@align='right']/../../tr[2]/td[2]
+          value: $DUE_2020
+          mod: CLEAN_INT
+        - xpath: //th[@align='right']/../../tr[3]/td[2]
+          value: $AMOUNT_2020
+          mod: CLEAN_INT
+    - exit_iframe:
+    - click_on:
+        - selector: "#fancybox-close"
+    - wait: 2
+    - click_on:
+        - selector: "#hit_list > tbody > tr:nth-child(2)"
+    - wait: 2
+    - enter_iframe:
+        - selector: "#fancybox-frame"
+    - return:
+        - xpath: //th[@align='right']/../../tr[2]
+          value: $DUE_2019
+          mod: CLEAN_INT
+        - xpath: //th[@align='right']/../../tr[3]
+          value: $AMOUNT_2019
+          mod: CLEAN_INT
