@@ -191,7 +191,8 @@ class TaxBot:
                                     mod = directive_data['mod']
                                     if mod == 'CLEAN_INT':
                                         ret = re.sub(r"[^0-9.]", "", elem.text)
-
+                                    elif mod == 'CLEAN_NEWLINE':
+                                        ret = re.sub(r'[\n]+', ' ', elem.text)
                                 self.return_[value] = ret
 
                         elif directive == 'enter_iframe':
