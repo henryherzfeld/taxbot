@@ -1,0 +1,38 @@
+fips: 37045
+form:
+  steps:
+    - visit: "https://www.clevelandcountytaxes.com/taxes.html#/WildfireSearch"
+    - click_on:
+        - selector: "i.far.fa-check-square"
+    - fill_in:
+        - selector: "#searchBox"
+          value: $PID
+    - wait: 1
+    - click_on:
+        - xpath: //li[contains(., 'Parcel')]
+    - click_on:
+        - xpath: //tr[@ng-repeat='r in result.Records'][contains(., "2020")]/td[9]
+    - return:
+        - xpath: //h4[contains(., 'Bill Information')]/..//tbody/tr[1]/td[@class='ng-binding']
+          value: $OWNER_NAME
+        - xpath: //h4[contains(., 'Bill Information')]/..//tbody/tr[2]/td[@class='ng-binding']
+          value: $OWNER_STREET_ADDR_FULL
+          mod: CLEAN_NEWLINE
+        - xpath: //td[contains(., 'Description')]/following-sibling::td
+          value: $PROPERTY_STREET_ADDR_FULL
+        - xpath: //td[contains(., 'Base Tax Amount')]/following-sibling::td
+          value: $AMOUNT_2020
+          mod: CLEAN_INT
+        - xpath: //td[contains(., 'Amount Due')]/following-sibling::td
+          value: $DUE_2020
+          mod: CLEAN_INT
+    - back:
+    - click_on:
+        - xpath: //tr[@ng-repeat='r in result.Records'][contains(., "2019")]/td[9]
+    - return:
+        - xpath: //td[contains(., 'Base Tax Amount')]/following-sibling::td
+          value: $AMOUNT_2019
+          mod: CLEAN_INT
+        - xpath: //td[contains(., 'Amount Due')]/following-sibling::td
+          value: $DUE_2019
+          mod: CLEAN_INT

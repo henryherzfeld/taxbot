@@ -1,0 +1,37 @@
+fips: 37009
+form:
+  steps:
+    - visit: "https://ashecountytax.com/taxes.html#/WildfireSearch"
+    - click_on:
+        - selector: "i.far.fa-check-square"
+    - fill_in:
+        - selector: "#searchBox"
+          value: $PID
+    - click_on:
+        - xpath: //div[not(@class='hidden-xs')]/div/form/div/div/span/button
+    - click_on:
+        - xpath: //tr[@ng-repeat='r in result.Records'][contains(., "2020")]/td[10]
+    - return:
+        - xpath: //h4[contains(., 'Owner Information')]/following-sibling::text()[1]
+          value: $OWNER_NAME
+        - xpath: //h4[contains(., 'Owner Information')]/following-sibling::text()[3]
+          value: $OWNER_STREET_ADDR_FULL
+          mod: CLEAN_NEWLINE
+        - xpath: //td[contains(., 'Description')]/following-sibling::td
+          value: $PROPERTY_STREET_ADDR_FULL
+        - xpath: //td[contains(., 'Total Original Levy')]/following-sibling::td
+          value: $AMOUNT_2020
+          mod: CLEAN_INT
+        - xpath: //td[contains(., 'Total Due')]/following-sibling::td
+          value: $DUE_2020
+          mod: CLEAN_INT
+    - back:
+    - click_on:
+        - xpath: //tr[@ng-repeat='r in result.Records'][contains(., "2019")]/td[10]
+    - return:
+        - xpath: //td[contains(., 'Total Original Levy')]/following-sibling::td
+          value: $AMOUNT_2019
+          mod: CLEAN_INT
+        - xpath: //td[contains(., 'Total Due')]/following-sibling::td
+          value: $DUE_2019
+          mod: CLEAN_INT
