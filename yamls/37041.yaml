@@ -1,0 +1,38 @@
+fips: 37041
+form:
+  steps:
+    - visit: "http://taxonline.chowancountync.email/itsnet/TaxBill.aspx"
+    - fill_in:
+        - selector: "#ctl00_contentplaceholdertaxBillSearch_UsercontrolTaxbillSearch_ctrlParcelNumber_txtParcel"
+          value: $PID
+    - click_on:
+        - name: ctl00$contentplaceholdertaxBillSearch$UsercontrolTaxbillSearch$buttonSearch
+          selector: "#ctl00_contentplaceholdertaxBillSearch_UsercontrolTaxbillSearch_buttonSearch"
+        - xpath: //a[contains(., "2020")][1]
+    - wait: 1
+    - return:
+        - xpath: //a[contains(., "2020")]/../../td[5]
+          value: $AMOUNT_2020
+          mod: CLEAN_INT
+        - xpath: //a[contains(., "2020")]/../../td[6]
+          value: $DUE_2020
+          mod: CLEAN_INT
+        - xpath: //a[contains(., "2019")]/../../td[5]
+          value: $AMOUNT_2019
+          mod: CLEAN_INT
+        - xpath: //a[contains(., "2019")]/../../td[6]
+          value: $DUE_2019
+          mod: CLEAN_INT
+        - selector: "#ctl00_contentplaceholderTaxBillSearchSummary_UsercontrolTaxBillSelectedBillDisplay_labelAccountName1Value"
+          value: $OWNER_NAME
+        - selector: "#ctl00_contentplaceholderTaxBillSearchSummary_UsercontrolTaxBillSelectedBillDisplay_labelMailingAddress1Value"
+          alt_selector: "#ctl00_contentplaceholderTaxBillSearchSummary_UsercontrolTaxBillSelectedBillDisplay_labelMailingAddress2Value"
+          value: $OWNER_STREET_ADDR
+        - selector: "#ctl00_contentplaceholderTaxBillSearchSummary_UsercontrolTaxBillSelectedBillDisplay_labelMailingCityValue"
+          value: $OWNER_CITY
+        - selector: "#ctl00_contentplaceholderTaxBillSearchSummary_UsercontrolTaxBillSelectedBillDisplay_labelMailingStateValue"
+          value: $OWNER_STATE
+        - selector: "#ctl00_contentplaceholderTaxBillSearchSummary_UsercontrolTaxBillSelectedBillDisplay_labelMailingZipValue"
+          value: $OWNER_ZIP
+        - selector: "#ctl00_contentplaceholderTaxBillSearchSummary_UsercontrolTaxBillSelectedBillDisplay_labelPropertyAddress"
+          value: $PROPERTY_STREET_ADDR
