@@ -1,7 +1,7 @@
-fips: 37079
+fips: 24003
 form:
   steps:
-    - visit: "https://greenecounty.munisselfservice.com/citizens/RealEstate/Default.aspx?mode=new"
+    - visit: "https://aacounty.munisselfservice.com/citizens/RealEstate/Default.aspx?mode=new"
     - fill_in:
         - name: ctl00$ctl00$PrimaryPlaceHolder$ContentPlaceHolderMain$Control$ParcelIdSearchFieldLayout$ctl01$ParcelIDTextBox
           value: $PID

@@ -51,7 +51,7 @@ form:
     - back:
     - click_on:
         - value: View Bill
-          xpath: //tr[contains(., '2020')]/td[7]
+          xpath: //tr[contains(., '2019')]/td[7]
     - return:
         - name:
           selector: "tbody > tr:last-child > td:nth-child(6)"
