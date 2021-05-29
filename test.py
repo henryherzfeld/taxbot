@@ -1,5 +1,12 @@
 from taxbot import TaxBot
 import argparse
+import platform
+
+# evaluate platform, assign chromedriver locating strategy contingent on result
+if platform.system() == 'Windows':
+    local = True
+else:
+    local = False
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--pid', type=str, help="the pid you are using")
@@ -16,5 +23,5 @@ if not pid:
 if not fips:
     fips = str(input("enter fips: "))
 
-bot = TaxBot(pid, fips, local=True, verbosity=1)
+bot = TaxBot(pid, fips, local=local, verbosity=1)
 print(bot.process_form())
