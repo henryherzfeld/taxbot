@@ -1,0 +1,47 @@
+fips: 24031
+form:
+  steps:
+    - visit: "https://apps.montgomerycountymd.gov/realpropertytax/"
+    - fill_in:
+        - name: ctl00$MainContent$ParcelCode
+          value: $PID
+    - click_on:
+        - value: VIEW
+          selector: "#ctl00_MainContent_btnAcc"
+    - click_on:
+        - value: View Bill
+          xpath: //tr[contains(., '2020')]/td[3]/a
+    - return:
+        - name:
+          selector: "#ctl00_MainContent_lblIToPay"
+          value: $DUE_2020
+          mod: CLEAN_INT
+        - name:
+          selector: "#ctl00_MainContent_lblTaxAmount6 > b"
+          value: $AMOUNT_2020
+          mod: CLEAN_INT
+        - name:
+          selector: "#ctl00_MainContent_lblCompleteAddress"
+          value: $PROPERTY_STREET_ADDR
+        - name:
+          selector: "#ctl00_MainContent_lblName"
+          value: $OWNER_NAME
+        - name:
+          selector: "#ctl00_MainContent_lblCompleteAddress"
+          value: $OWNER_STREET_ADDR_FULL
+        - name:
+          selector: "#ctl00_MainContent_lblOccupancy"
+          value: $OCCUPANCY
+    - back:
+    - click_on:
+        - value: View Bill
+          xpath: //tr[contains(., '2019')]/td[3]/a
+    - return:
+        - name:
+          selector: "#ctl00_MainContent_lblIToPay"
+          value: $DUE_2019
+          mod: CLEAN_INT
+        - name:
+          selector: "#ctl00_MainContent_lblTaxAmount6 > b"
+          value: $AMOUNT_2019
+          mod: CLEAN_INT
