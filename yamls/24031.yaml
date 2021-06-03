@@ -17,7 +17,7 @@ form:
           value: $DUE_2020
           mod: CLEAN_INT
         - name:
-          selector: "#ctl00_MainContent_lblTaxAmount6 > b"
+          xpath: //span[contains(., 'TOTAL')]/parent::td/following-sibling::td[3]
           value: $AMOUNT_2020
           mod: CLEAN_INT
         - name:
@@ -42,6 +42,6 @@ form:
           value: $DUE_2019
           mod: CLEAN_INT
         - name:
-          selector: "#ctl00_MainContent_lblTaxAmount6 > b"
+          xpath: //span[contains(., 'TOTAL')]/parent::td/following-sibling::td[3]
           value: $AMOUNT_2019
           mod: CLEAN_INT
