@@ -122,7 +122,6 @@ class TaxBot:
         if self.verbosity > 0:
             print(f"processing directive {directive}")
 
-
         if not self.complete:
             find_elem_keys = ['id', 'name', 'selector', 'class', 'xpath']
             for directive_data in directive_data_list:
@@ -149,10 +148,22 @@ class TaxBot:
                     else:
                         # perform find for element using selectors and alt_selectors if available
                         elem = self.process_find(driver, directive, directive_data, find_elem_keys)
+
+                        find_and_fail = True
+                        if 'mod' in directive_data:
+                            mod = directive_data['mod']
+
+                            if mod == "TRY":
+                                find_and_fail = False
+
                         if elem is None:
-                            print('failed to find element, aborting...')
-                            self.abort()
-                            break
+                            if find_and_fail:
+                                print('failed to find element, aborting...')
+                                self.abort()
+                                break
+                            else:
+                                print('failed to find element, TRY modification for current step, continuing...')
+                                break
 
                         value = None
                         if 'value' in directive_data:

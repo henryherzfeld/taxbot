@@ -8,6 +8,8 @@ form:
     - click_on:
         - value: VIEW
           selector: "#ctl00_MainContent_btnAcc"
+        - selector: "#acsFocusFirst"
+          mod: TRY
     - click_on:
         - value: View Bill
           xpath: //tr[contains(., '2020')]/td[3]/a
@@ -33,6 +35,9 @@ form:
           selector: "#ctl00_MainContent_lblOccupancy"
           value: $OCCUPANCY
     - back:
+    - click_on:
+        - selector: "#acsFocusFirst"
+          mod: TRY
     - click_on:
         - value: View Bill
           xpath: //tr[contains(., '2019')]/td[3]/a
