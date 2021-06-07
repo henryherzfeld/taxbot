@@ -1,0 +1,64 @@
+fips: 28121
+form:
+  steps:
+    - visit: "http://www.deltacomputersystems.com/ms/ms61/plinkquerym.html"
+    - fill_in:
+        - name: HTMPARCELNUMBER
+          value: $PID
+    - click_on:
+        - value: Submit
+          selector: "input[type='submit']"
+    - click_on:
+        - value: View Bill
+          xpath: //tr[contains(., '$PID')]/td[7]
+          mod: PARSE_TOKEN
+#    - return:
+#        - name:
+#          selector: "tbody > tr:last-child > td:nth-child(6)"
+#          alt_selector: "tr.lightGrayBackground > td:nth-child(6)"
+#          value: $DUE_2020
+#          mod: CLEAN_INT
+#        - name:
+#          selector: "table.datatable tbody > tr:last-child > td:nth-child(2)"
+#          alt_selector: "tr.lightGrayBackground > td:nth-child(2)"
+#          value: $AMOUNT_2020
+#          mod: CLEAN_INT
+#    - wait: 0.5
+#    - click_on:
+#        - value: Property Detail
+#          selector: "a[href='/citizens/RealEstate/ParcelDetail.aspx']"
+#    - return:
+#        - name:
+#          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_LocationLabel"
+#          value: $PROPERTY_STREET_ADDR
+#    - wait: 0.5
+#    - click_on:
+#        - value: Owner Information
+#          selector: "a[href='/citizens/RealEstate/OwnerInformation.aspx']"
+#    - return:
+#        - name:
+#          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_OwnerInformation1_OwnerInformationFormLayout_CustomerNameFormLayoutItem_ctl01_CustomerNameLabel"
+#          value: $OWNER_NAME
+#        - name:
+#          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_OwnerInformation1_OwnerInformationFormLayout_CustomerAddressFormLayoutItem_ctl01_CustomerAddressLabel"
+#          value: $OWNER_STREET_ADDR
+#        - name:
+#          selector: "#ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_OwnerInformation1_OwnerInformationFormLayout_CityStateZipFormLayoutItem_ctl01_CityStateZipLabel"
+#          value: $OWNER_CITY_STATE_ZIP
+#    - back:
+#    - back:
+#    - back:
+#    - click_on:
+#        - value: View Bill
+#          xpath: //tr[contains(., '2019')]/td[7]
+#    - return:
+#        - name:
+#          selector: "tbody > tr:last-child > td:nth-child(6)"
+#          alt_selector: "tr.lightGrayBackground > td:nth-child(6)"
+#          value: $DUE_2019
+#          mod: CLEAN_INT
+#        - name:
+#          selector: "table.datatable tbody > tr:last-child > td:nth-child(2)"
+#          alt_selector: "tr.lightGrayBackground > td:nth-child(2)"
+#          value: $AMOUNT_2019
+#          mod: CLEAN_INT

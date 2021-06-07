@@ -56,20 +56,26 @@ class TaxBot:
         self.complete = True
         self.success = False
 
-        # if self.success:  # if successful operation save page source
-        #     with open(path.join(source_dir, self.pid) + '.html', 'w') as f:
-        #         f.write(self.driver.driver.page_source)
-        # else:              # else save screenshot
-        #     self.driver.driver.save_screenshot(path.join(screenshot_dir, self.pid) + '.png')
-
-    def resolve_alias(self, value):
+    # replaces a token where the string is the entire token before returning it
+    def replace_token(self, value):
         value = value.lstrip('$')
         if value == 'PID':
             value = self.pid
 
         return value
 
-# uses selectors in directive data to perform finds on elements, falls back on alternative selectors if available
+    # searches the provided string for $ token, tests type of token, and replaces it within the string before returning it
+    def parse_and_replace_token(self, value):
+        loc = value.find('$')
+
+        if len(value[loc:]) > 4:
+            if value[loc+1:loc+4] == "PID":
+                new_value = self.pid.join([value[:loc], value[loc+4:]])
+                return new_value
+
+        return None
+
+    # uses selectors in directive data to perform finds on elements, falls back on alternative selectors if available
     def process_find(self, driver, directive, directive_data, find_elem_keys):
         # build subset of directive_data
         element_data = {key: value for key, value in directive_data.items() if key in find_elem_keys}
@@ -146,6 +152,25 @@ class TaxBot:
                     if not find_elem:
                         logger.error(f"directive requiring a find on element missing {find_elem_keys} entries")
                     else:
+
+                        # test for REPLACE_TOKEN mod prior to find of element
+                        # if present, parse selectors and replace tokens
+                        if 'mod' in directive_data:
+                            mod = directive_data['mod']
+
+                            if mod == "PARSE_TOKEN":
+                                print(directive_data)
+                                directive_data_new = {}
+                                for key, value in directive_data.copy().items():
+                                    new_value = self.parse_and_replace_token(value)
+
+                                    if new_value is None:  # the provided piece of directive data did not contain a token
+                                        new_value = value
+
+                                    directive_data_new[key] = new_value
+                                directive_data = directive_data_new
+                                print(directive_data)
+
                         # perform find for element using selectors and alt_selectors if available
                         elem = self.process_find(driver, directive, directive_data, find_elem_keys)
 
@@ -156,6 +181,7 @@ class TaxBot:
                             if mod == "TRY":
                                 find_and_fail = False
 
+                        # abort execution if elemnt was not found, unless try modification present for step
                         if elem is None:
                             if find_and_fail:
                                 print('failed to find element, aborting...')
@@ -170,7 +196,7 @@ class TaxBot:
                             value = directive_data['value']
 
                             if '$' in value:  # check for alias symbol, if present identify and replace
-                                value = self.resolve_alias(value)
+                                value = self.replace_token(value)
 
                         if directive == 'fill_in':
                             if value is not None:
