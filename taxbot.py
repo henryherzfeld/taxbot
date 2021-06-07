@@ -159,7 +159,6 @@ class TaxBot:
                             mod = directive_data['mod']
 
                             if mod == "PARSE_TOKEN":
-                                print(directive_data)
                                 directive_data_new = {}
                                 for key, value in directive_data.copy().items():
                                     new_value = self.parse_and_replace_token(value)
@@ -169,21 +168,20 @@ class TaxBot:
 
                                     directive_data_new[key] = new_value
                                 directive_data = directive_data_new
-                                print(directive_data)
 
                         # perform find for element using selectors and alt_selectors if available
                         elem = self.process_find(driver, directive, directive_data, find_elem_keys)
 
-                        find_and_fail = True
+                        find_or_fail = True
                         if 'mod' in directive_data:
                             mod = directive_data['mod']
 
                             if mod == "TRY":
-                                find_and_fail = False
+                                find_or_fail = False
 
                         # abort execution if elemnt was not found, unless try modification present for step
                         if elem is None:
-                            if find_and_fail:
+                            if find_or_fail:
                                 print('failed to find element, aborting...')
                                 self.abort()
                                 break
@@ -230,6 +228,7 @@ class TaxBot:
                                         ret = re.sub(r"[^0-9.]", "", elem.text)
                                     elif mod == 'CLEAN_NEWLINE':
                                         ret = re.sub(r'[\n]+', ' ', elem.text)
+
                                 self.return_[value] = ret
 
                         elif directive == 'enter_iframe':
