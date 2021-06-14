@@ -37,22 +37,23 @@ class WebDriver:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.driver.close()
         self.driver.quit()
-        
-        try:
-            pid = True
-            while pid:
-                pid = os.waitpid(-1, os.WNOHANG)
-                log.debug("Reaped child: %s" % str(pid))
-                print("Reaped child: %s" % str(pid))
 
-                try:
-                    if pid[0] == 0:
-                        pid = False
-                except:
-                    pass
+        if not self.local:
+            try:
+                pid = True
+                while pid:
+                    pid = os.waitpid(-1, os.WNOHANG)
+                    logger.debug("Reaped child: %s" % str(pid))
+                    print("Reaped child: %s" % str(pid))
 
-        except ChildProcessError:
-            pass
+                    try:
+                        if pid[0] == 0:
+                            pid = False
+                    except:
+                        pass
+
+            except ChildProcessError:
+                pass
 
     def wait(self, n):
         print(f"sleeping for {n} seconds")
