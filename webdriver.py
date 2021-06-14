@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, WebDriverException
 from selenium.webdriver.chrome.options import Options
 from time import sleep
+import os
 import logging
 logger = logging.getLogger(__name__)
 
@@ -36,6 +37,22 @@ class WebDriver:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.driver.close()
         self.driver.quit()
+        
+        try:
+            pid = True
+            while pid:
+                pid = os.waitpid(-1, os.WNOHANG)
+                log.debug("Reaped child: %s" % str(pid))
+                print("Reaped child: %s" % str(pid))
+
+                try:
+                    if pid[0] == 0:
+                        pid = False
+                except:
+                    pass
+
+        except ChildProcessError:
+            pass
 
     def wait(self, n):
         print(f"sleeping for {n} seconds")
